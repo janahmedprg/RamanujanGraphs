@@ -18,7 +18,7 @@ vector<int> getNeighbors(vector<int> adjacencyList)
 
 int main()
 {
-    srand(unsigned(time(0)));
+    srand(time(0));
     int n;
     cout << "Enter number of vertices"
          << "\n";
@@ -47,9 +47,9 @@ int main()
     vector<int> pos;
     for (int j = 0; j < i; ++j)
     {
-        pos.push_back(j);
+        pos.push_back(rand() % n);
     }
-    random_shuffle(pos.begin(), pos.end());
+    sort(pos.begin(), pos.end());
     vector<int> croudedness;
     croudedness.resize(n);
     for (int j = 0; j < i; ++j)
@@ -59,7 +59,58 @@ int main()
         int regularity = tmpNeigbours.size();
         for (int x = 0; x < regularity; ++x)
         {
-            croudedness[tmpNeigbours[x]] += 1;
+            vector<int>::iterator isInSet = lower_bound(pos.begin(), pos.end(), tmpNeigbours[x]);
+            if (isInSet != pos.end() && *isInSet == tmpNeigbours[x])
+            {
+                croudedness[tmpNeigbours[x]] -= 1;
+            }
+            else
+            {
+                croudedness[tmpNeigbours[x]] += 1;
+            }
+        }
+    }
+    for (int ite = 0; ite < 300; ++ite)
+    {
+        int indeVertices = 0;
+        for (int j = 0; j < i; ++j)
+        {
+            vector<int> tmpNeigbours;
+            tmpNeigbours = neighborMat[pos[j]];
+            int regularity = tmpNeigbours.size();
+            int minC = -(croudedness[j]);
+            int minCidx = j;
+            for (int x = 0; x < regularity; ++x) {
+                if (croudedness[tmpNeigbours[x]]>=0){
+                    if(minC>croudedness[tmpNeigbours[x]]){
+                        minC = croudedness[tmpNeigbours[x]];
+                        minCidx = tmpNeigbours[x];
+                    }
+                    else if ( minC == croudedness[tmpNeigbours[x]]){
+                        if (rand()%2==0) {
+                            minCidx = tmpNeigbours[x];
+                        }
+                    }
+                }
+            }
+            if (j!=minCidx){
+                pos[j] = minCidx;
+                for (int x = 0; x<regularity; ++x){
+                    if (minCidx==tmpNeigbours[x]){
+                        continue;
+                    }
+                    if(croudedness[tmpNeigbours[x]]>0){
+                        croudedness[tmpNeigbours[x]]-=1;
+                    }
+                    else{
+                        croudedness[tmpNeigbours[x]] += 1;
+                    }
+                }
+                croudedness[j]=-croudedness[j];
+                vector<int> tmpN;
+                tmpN = neighborMat[pos[j]];
+                
+            }
         }
     }
 }
