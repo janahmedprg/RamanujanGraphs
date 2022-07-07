@@ -30,8 +30,8 @@ int main()
     inFile >> a >> b;
     while (a != -1 && b != -1)
     {
-        A[a][b] = 1;
-        A[b][a] = 1;
+        A[a-1][b-1] = 1;
+        A[b-1][a-1] = 1;
         inFile >> a >> b;
     }
     vector<vector<int>> neighborMat;
@@ -44,6 +44,7 @@ int main()
     cout << "Enter independence number"
          << "\n";
     int i;
+    cin>>i;
     vector<int> pos;
     for (int j = 0; j < i; ++j)
     {
@@ -70,16 +71,29 @@ int main()
             }
         }
     }
-    for (int ite = 0; ite < 300; ++ite)
+    int moved = 0;
+    int independent = 0;
+    for (int ite = 0; ite < 3000; ++ite)
     {
-        int indeVertices = 0;
+        cout<<"independent"<< " moved"<<endl;
+        cout<<independent<<"         "<< moved<<endl;
+        if (independent == i){
+            cout<< "Found set in "<< ite << " iterations. The set: \n";
+            for(int j = 0; j<i;++j){
+                cout<<pos[j]<<" ";
+            }
+            cout<<"\n";
+            break;
+        }
+        independent = 0;
+        moved = 0; 
         for (int j = 0; j < i; ++j)
         {
             vector<int> tmpNeigbours;
             tmpNeigbours = neighborMat[pos[j]];
             int regularity = tmpNeigbours.size();
-            int minC = -(croudedness[j]);
-            int minCidx = j;
+            int minC = -(croudedness[pos[j]]);
+            int minCidx = pos[j];
             for (int x = 0; x < regularity; ++x) {
                 if (croudedness[tmpNeigbours[x]]>=0){
                     if(minC>croudedness[tmpNeigbours[x]]){
@@ -93,8 +107,7 @@ int main()
                     }
                 }
             }
-            if (j!=minCidx){
-                pos[j] = minCidx;
+            if (pos[j]!=minCidx){
                 for (int x = 0; x<regularity; ++x){
                     if (minCidx==tmpNeigbours[x]){
                         continue;
@@ -106,11 +119,25 @@ int main()
                         croudedness[tmpNeigbours[x]] += 1;
                     }
                 }
-                croudedness[j]=-croudedness[j];
+                croudedness[pos[j]]=-croudedness[pos[j]];
+                pos[j] = minCidx;
                 vector<int> tmpN;
                 tmpN = neighborMat[pos[j]];
-                
+                croudedness[pos[j]] = -croudedness[pos[j]];
+                for (int x = 0; x<regularity; ++x){ 
+                    if(croudedness[tmpN[x]]<=0){
+                        croudedness[tmpN[x]]+=1;
+                    }
+                    else{
+                        croudedness[tmpN[x]] -= 1;
+                    }
+                }
+               moved += 1; 
             }
+            if (croudedness[pos[j]] == 0){
+                independent +=1;      
+            } 
         }
     }
+    return 0;
 }
