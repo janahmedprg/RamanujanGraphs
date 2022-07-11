@@ -54,6 +54,12 @@ int main()
     sort(pos.begin(), pos.end());
     for (int j = 0; j < i; ++j)
     {
+        if(j!=i-1){
+            if(pos[j] == pos[j+11]){
+                cout<< "There are duplicates"<<endl;
+                return 0;
+            }
+        }
         vector<int> tmpNeigbours;
         tmpNeigbours = neighborMat[pos[j]];
         int regularity = tmpNeigbours.size();

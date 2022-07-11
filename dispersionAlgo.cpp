@@ -49,7 +49,7 @@ int main()
     int i;
     cin >> i;
     pos.resize(i);
-    sort(pos.begin(),pos.end());
+    sort(pos.begin(), pos.end());
     vector<int> croudedness;
     croudedness.resize(n);
     for (int j = 0; j < i; ++j)
@@ -72,17 +72,17 @@ int main()
     }
     int moved = 0;
     int independent = 0;
-    for (int ite = 0; ite < 9000; ++ite)
+    for (int ite = 0; ite < 90000; ++ite)
     {
-        cout << "independent"
-             << " moved" << endl;
-        cout << independent << "         " << moved << endl;
+        // cout << "independent"
+        //      << " moved" << endl;
+        // cout << independent << "         " << moved << endl;
         if (independent == i)
         {
             cout << "Found set in " << ite << " iterations. The set: \n";
             for (int j = 0; j < i; ++j)
             {
-                cout << pos[j]+1 << " ";
+                cout << pos[j] + 1 << " ";
             }
             cout << "\n";
             return 0;
@@ -95,6 +95,10 @@ int main()
             tmpNeigbours = neighborMat[pos[j]];
             int regularity = tmpNeigbours.size();
             int minC = -(croudedness[pos[j]]);
+            if (minC < 0)
+            {
+                cout << minC << "  WTH  " << pos[j] << "\n";
+            }
             int minCidx = pos[j];
             for (int x = 0; x < regularity; ++x)
             {
@@ -103,7 +107,7 @@ int main()
                     if (minC > croudedness[tmpNeigbours[x]] - 1)
                     {
                         minC = croudedness[tmpNeigbours[x]] - 1;
-                        minCidx = tmpNeigbours[x];   
+                        minCidx = tmpNeigbours[x];
                     }
                     else if (minC == croudedness[tmpNeigbours[x]] - 1)
                     {
@@ -113,15 +117,16 @@ int main()
                         }
                     }
                 }
-                else if(croudedness[tmpNeigbours[x]] == 0){
-                    cout<<"Neigbor can't never have 0 crowdedness"<<endl;
+                else if (croudedness[tmpNeigbours[x]] == 0)
+                {
+                    cout << "Neigbor can't never have 0 crowdedness" << endl;
                     return 0;
                 }
             }
             if (pos[j] != minCidx)
             {
                 for (int x = 0; x < regularity; ++x)
-                { 
+                {
                     if (croudedness[tmpNeigbours[x]] > 0)
                     {
                         croudedness[tmpNeigbours[x]] -= 1;
@@ -147,6 +152,18 @@ int main()
                     {
                         croudedness[tmpN[x]] -= 1;
                     }
+                    else if (croudedness[tmpN[x]] == 0)
+                    {
+                        vector<int>::iterator isInPos = find(pos.begin(), pos.end(), tmpN[x]);
+                        if (isInPos != pos.end() && *isInPos == tmpN[x])
+                        {
+                            croudedness[tmpN[x]] -= 1;
+                        }
+                        else
+                        {
+                            croudedness[tmpN[x]] += 1;
+                        }
+                    }
                     else
                     {
                         croudedness[tmpN[x]] += 1;
@@ -164,12 +181,13 @@ int main()
     int count = 0;
     for (int j = 0; j < i; ++j)
     {
-        if (croudedness[pos[j]]==0){
-            cout << pos[j]+1 << ", ";
+        if (croudedness[pos[j]] == 0)
+        {
+            cout << pos[j] + 1 << " ";
             count += 1;
         }
     }
     cout << endl;
-    cout<<count<<endl;
+    cout << count << endl;
     return 0;
 }
