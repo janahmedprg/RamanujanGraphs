@@ -20,19 +20,38 @@ int main()
 {
     srand(time(0));
     int n;
-    cout << "Enter number of vertices"
-         << "\n";
-    cin >> n;
+    char charT;
+    ifstream inFile("lpsP43Q13.txt");
+    inFile >> charT;
+    if (charT == 'p'){
+        inFile>> n;
+    }
     vector<vector<int>> A;
     A.resize(n, vector<int>(n));
-    ifstream inFile("lpsP3Q13.txt");
+    char tempChar;
     int a, b;
-    inFile >> a >> b;
+    inFile >>tempChar;
+    if(tempChar == 'c'){
+        string s;
+        getline(inFile,s);
+    }
+    else{ 
+        inFile>> a >> b;
+    }
     while (a != -1 && b != -1)
     {
-        A[a - 1][b - 1] = 1;
-        A[b - 1][a - 1] = 1;
-        inFile >> a >> b;
+        if(tempChar == 'e'){
+            A[a - 1][b - 1] = 1;
+            A[b - 1][a - 1] = 1;
+        }
+        inFile >>tempChar;
+        if(tempChar == 'c'){
+            string s;    
+            getline(inFile,s);
+        }
+        else{ 
+            inFile>> a >> b;
+        }
     }
     vector<vector<int>> neighborMat;
     vector<int> pos;
