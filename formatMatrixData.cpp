@@ -4,40 +4,23 @@ using namespace std;
 
 int main()
 {
-    srand(time(0));
-    int n;
-    char charT;
-    ifstream inFile("lpsXp17q13.txt");
-    inFile >> charT;
-    if (charT == 'p'){
-        inFile>> n;
+    ifstream iSet("lpsXp3q13mat.txt");
+    ifstream matFile("lpsP3Q13mat.txt");
+    ofstream outfile("iSetMatP3Q13.txt");
+    vector<int> v;
+    int a;
+    while(iSet>>a){
+        v.push_back(a);
     }
-    vector<vector<int>> A;
-    A.resize(n, vector<int>(n));
-    char tempChar;
-    int a, b;
-    inFile >>tempChar;
-    if(tempChar == 'c'){
-        string s;
-        getline(inFile,s);
-    }
-    else{ 
-        inFile>> a >> b;
-    }
-    while (a != -1 && b != -1)
-    {
-        if(tempChar == 'e'){
-            A[a - 1][b - 1] = 1;
-            A[b - 1][a - 1] = 1;
-        }
-        inFile >>tempChar;
-        if(tempChar == 'c'){
-            string s;    
-            getline(inFile,s);
-        }
-        else{ 
-            inFile>> a >> b;
+    sort(v.begin(),v.end());
+    int n=v.size();
+    for(int i = 0;i<n;++i){
+        int k,a,b,c,d;
+        cin>>k>>a>>b>>c>>d;
+        if(k==v[i]){
+            outfile<<"[ "<<a<<" "<<b<<" "<<c<<" "<<d<<" ]\n";
         }
     }
+    outfile.close();
     return 0;
 }

@@ -19,7 +19,7 @@ vector<int> getNeighbors(vector<int> adjacencyList)
 int main()
 {
     srand(time(0));
-    string filename = "lpsP43Q13";
+    string filename = "lpsP157Q13";
     ifstream inFile(filename+".txt");
     int n;
     int i;
@@ -104,17 +104,17 @@ int main()
             // cout << independent << "         " << moved << endl;
             if (independent == i)
             {
-                string outfilename = filename + "i" + to_string(i)+"ite" + to_string(ii) + ".txt";
-                ofstream outfile (outfilename);
+                // string outfilename = filename + "i" + to_string(i)+"ite" + to_string(ii) + ".txt";
+                // ofstream outfile (outfilename);
                 cout << "Found set in " << ite << " iterations. The set: \n";
                 for (int j = 0; j < i; ++j)
                 {
                     cout << pos[j] + 1 << " ";
-                    outfile<< pos[j] + 1 << " ";
+                    // outfile<< pos[j] + 1 << " ";
                 }
                 cout << "\n";
                 done = false;
-                outfile.close();
+                // outfile.close();
                 break;
             }
             independent = 0;
